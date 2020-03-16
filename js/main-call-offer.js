@@ -2,7 +2,11 @@
 
 console.log('Html Offer')
 
-var peerConnection = new RTCPeerConnection()
+var peerConnection = new RTCPeerConnection({
+  'icsServers': [{
+    "urls": [ "stun:stun.l.google.com:19302" ]
+  }]
+})
 
 // 告知对方网络链接方案（候选人）
 peerConnection.onicecandidate = (e) => {
@@ -21,11 +25,6 @@ socket.on('receive-answer', anwser => {
   peerConnection.setRemoteDescription(anwser)
 })
 
-socket.on('receive-answer-icecandidate', candidate => {
-  console.log(`Receive Answer Icecandidate`, candidate)
-  peerConnection.addIceCandidate(candidate)
-})
-
 socket.on('drawing-board-changed-received', function (base64img) {
   defaultBoard.setImg(base64img)
 })
@@ -39,8 +38,10 @@ showView().then(stream => {
   // 创建请求端，offerOpts获取本地媒体参数信息
   // Peer通讯媒体信息交换
   peerConnection.createOffer({
-    'offerToRecieveAudio': 0,
-    'offerToRecieveVideo': 1
+    'offerToRecieveAudio': 1,
+    'offerToRecieveVideo': 1,
+    'iceRestart': true,
+    'voiceActivityDetection': true
   })
     .then(offer => {
       console.log(`Send Offer`, offer)
@@ -66,4 +67,9 @@ var defaultBoard = new DrawingBoard.Board('default-board');
 defaultBoard.ev.bind('board:stopDrawing', (e) => {
   let base64img = sessionStorage.getItem('drawing-board-default-board')
   socket.emit('drawing-board-changed', base64img)
+})
+
+socket.on('receive-answer-icecandidate', candidate => {
+  console.log(`Receive Answer Icecandidate`, candidate)
+  peerConnection.addIceCandidate(candidate)
 })

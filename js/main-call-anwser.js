@@ -2,7 +2,11 @@
 
 console.log('Html Answer')
 
-var peerConnection = new RTCPeerConnection()
+var peerConnection = new RTCPeerConnection({
+  'icsServers': [{
+    "urls": [ "stun:stun.l.google.com:19302" ]
+  }]
+})
 
 // 告知对方网络链接方案（候选人）
 peerConnection.onicecandidate = (e) => {
@@ -26,11 +30,13 @@ showView().then(stream => {
 
     offer = new RTCSessionDescription(offer)
     peerConnection.setRemoteDescription(offer)
-    
+
     // 创建应答
     peerConnection.createAnswer({
-      'offerToRecieveAudio': 0,
-      'offerToRecieveVideo': 1
+      'offerToRecieveAudio': 1,
+      'offerToRecieveVideo': 1,
+      'iceRestart': true,
+      'voiceActivityDetection': true
     })
       .then(answer => {
         console.log(`Send answer`, answer)
@@ -57,11 +63,11 @@ $("#hangup").on('click', function (e) {
 
 var defaultBoard = new DrawingBoard.Board('default-board');
 
-socket.on('drawing-board-changed-received', function (base64img) {
-  defaultBoard.setImg(base64img)
-})
-
 defaultBoard.ev.bind('board:stopDrawing', (e) => {
   let base64img = sessionStorage.getItem('drawing-board-default-board')
   socket.emit('drawing-board-changed', base64img)
+})
+
+socket.on('drawing-board-changed-received', function (base64img) {
+  defaultBoard.setImg(base64img)
 })
