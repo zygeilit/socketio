@@ -19,14 +19,23 @@
   <link rel="icon" sizes="192x192" href="../../../images/webrtc-icon-192x192.png">
   <link href="//fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet" type="text/css">
   <link rel="stylesheet" href="/main.css">
+  <link rel="stylesheet" href="/css/drawingboard.css">
+  <link rel="stylesheet" href="/css/drawingboard.nocontrol.css">
   <style>
     video {
       vertical-align: top;
       width: 470px;
       height: 264px;
     }
+    #default-board {
+      height: 400px;
+    }
+    #board-container {
+      margin-top: 20px;
+      background-color: #cccccc;
+      padding: 10px;
+    }
   </style>
-
 </head>
 
 <body>
@@ -45,9 +54,14 @@
     <button id="send-btn">Send</button>
 
     <div id="chart-content"></div>
-    <div id="errorMsg"></div>
-
     <input id="message" />
+
+    <div id="board-container">
+      <div id="default-board"></div>
+    </div>
+    
+    <div id="errorMsg"></div>
+    
   </div>
 
   <script src="/socket.io/socket.io.js"></script>
@@ -55,6 +69,15 @@
 
   <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
   <script src="/lib/ga.js"></script>
+
+  <script src="/js/simple-undo.js"></script>
+  <script src="/js/utils.js"></script>
+  <script src="/js/board.js"></script>
+  <script src="/js/controls/control.js"></script>
+  <script src="/js/controls/color.js"></script>
+  <script src="/js/controls/drawingmode.js"></script>
+  <script src="/js/controls/navigation.js"></script>
+  <script src="/js/controls/size.js"></script>
 
   <script src="/js/main-socketio.js"></script>
   <script src="/js/main-video.js"></script>

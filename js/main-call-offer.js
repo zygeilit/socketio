@@ -26,6 +26,10 @@ socket.on('receive-answer-icecandidate', candidate => {
   peerConnection.addIceCandidate(candidate)
 })
 
+socket.on('drawing-board-changed-received', function (base64img) {
+  defaultBoard.setImg(base64img)
+})
+
 showView().then(stream => {
   console.log(`Media Get Success`)
 
@@ -55,4 +59,11 @@ $("#hangup").on('click', function (e) {
     peerConnection.close()
     peerConnection = null
   }
+})
+
+var defaultBoard = new DrawingBoard.Board('default-board');
+
+defaultBoard.ev.bind('board:stopDrawing', (e) => {
+  let base64img = sessionStorage.getItem('drawing-board-default-board')
+  socket.emit('drawing-board-changed', base64img)
 })

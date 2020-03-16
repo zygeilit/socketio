@@ -54,3 +54,14 @@ $("#hangup").on('click', function (e) {
     peerConnection = null
   }
 })
+
+var defaultBoard = new DrawingBoard.Board('default-board');
+
+socket.on('drawing-board-changed-received', function (base64img) {
+  defaultBoard.setImg(base64img)
+})
+
+defaultBoard.ev.bind('board:stopDrawing', (e) => {
+  let base64img = sessionStorage.getItem('drawing-board-default-board')
+  socket.emit('drawing-board-changed', base64img)
+})

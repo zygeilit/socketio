@@ -78,6 +78,10 @@ io.on('connection', function (socket) {
     io.to(roomID).emit('message', msg)
   })
 
+  socket.on('drawing-board-changed', function (base64img) {
+    socket.broadcast.to(roomID).emit('drawing-board-changed-received', base64img)
+  })
+
   peerConnection(socket, io, roomID)
 })
 
