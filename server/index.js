@@ -11,6 +11,7 @@ let roomInfo = {}
 app.use(express.static(path.join(__dirname, '..')))
 
 app.get('/', function (req, res) {
+  console.log(`Nodejs Router: HOME`)
   res.sendFile(path.join(__dirname, '..', '/html/index.html'))
 })
 
