@@ -3,6 +3,25 @@
 var pc1
 var pc2
 
+// 接受放接受请求
+socket.on('receive-offer', offer => {
+  offer = new RTCSessionDescription(offer)
+  pc2.setRemoteDescription(offer)
+  pc2.createAnswer()
+    .then(anwser => {
+      pc2.setLocalDescription(anwser)
+      // 接受方准备完媒体信息后，应答给请求方
+      socket.emit('send-answer', anwser)
+    })
+    .catch(err => console.log(`failed to create answer: ${err}`))
+})
+
+// 发起方接受应答
+socket.on('receive-answer', anwser => {
+  anwser = new RTCSessionDescription(anwser)
+  pc1.setRemoteDescription(anwser)
+})
+
 $("#call").on('click', function (e) {
   pc1 = new RTCPeerConnection()
   pc2 = new RTCPeerConnection()
@@ -31,18 +50,13 @@ $("#call").on('click', function (e) {
   // Peer通讯媒体信息交换
   pc1.createOffer(offerOpts)
     .then(offer => {
-      console.log(offer)
       pc1.setLocalDescription(offer)
-      pc2.setRemoteDescription(offer)
-      pc2.createAnswer()
-        .then(anwser => {
-          console.log(anwser)
-          pc2.setLocalDescription(anwser)
-          pc1.setRemoteDescription(anwser)
-        })
-        .catch(err => console.log(`failed to create answer: ${err}`))
+      // 请求方准备好媒体信息后，发送给接受方
+      socket.emit('send-offer', offer)
     })
-    .catch(err => console.log(`failed to create offer: ${err}`))
+    .catch(err => 
+      console.log(`failed to create offer: ${err}`)
+    )
 })
 
 $("#hangup").on('click', function (e) {

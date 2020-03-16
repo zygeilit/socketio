@@ -1,27 +1,24 @@
 var express = require('express')
-var ss = require('socket.io-stream')
 var app = express()
 var http = require('http').createServer(app)
 var io = require('socket.io')(http)
+var path = require('path')
+var peerConnection = require('./peer-connection')
 
 let roomInfo = {}
 
-app.use(express.static(__dirname))
+app.use(express.static(path.join(__dirname, '..')))
 
 app.get('/room/:roomID', function (req, res) {
-  res.sendFile(__dirname + '/index.html')
+  res.sendFile(path.join(__dirname, '..', '/index.html'))
 })
 
 io.on('connection', function (socket) {
 
-  // 获取请求建立socket连接的url
-  // 如: http://localhost:3000/room/room_1, roomID为room_1
   var url = socket.request.headers.referer
   var splited = url.split('/')
   var roomID = splited[splited.length - 1] // 获取房间ID
   var user = ''
-  console.log(url)
-  console.log(roomID)
 
   socket.on('join', function (userName) {
     user = userName
@@ -66,6 +63,8 @@ io.on('connection', function (socket) {
   socket.on('videostream', function (data) {
     io.to(roomID).emit('videostream-client', data)
   })
+
+  peerConnection(socket, io, roomID)
 })
 
 http.listen(3000, function () {
