@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="description" content="WebRTC code samples">
+  <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1, maximum-scale=1">
+  <meta itemprop="description" content="Client-side WebRTC code samples">
+  <meta itemprop="image" content="../../../images/webrtc-icon-192x192.png">
+  <meta itemprop="name" content="WebRTC code samples">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta id="theme-color" name="theme-color" content="#ffffff">
+
+  <base target="_blank">
+
+  <title>getUserMedia</title>
+
+  <link rel="icon" sizes="192x192" href="../../../images/webrtc-icon-192x192.png">
+  <link href="//fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/main.css">
+  <style>
+    video {
+      vertical-align: top;
+      width: 470px;
+      height: 264px;
+    }
+  </style>
+
+</head>
+
+<body>
+
+  <div id="container">
+    <h1>
+      <a href="//webrtc.github.io/samples/" title="WebRTC samples homepage">WebRTC samples</a>
+      <span>getUserMedia</span>
+    </h1>
+
+    <video id="gum-local" autoplay playsinline></video>
+    <video id="video-remote" autoplay playsinline></video>
+
+    <button id="showVideo">Open camera</button>
+    <button id="getDevices">Get Devices</button>
+    <button id="send-btn">Send</button>
+
+    <div id="chart-content"></div>
+    <div id="errorMsg"></div>
+
+    <input id="message" />
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+
+  <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+  <script src="/lib/ga.js"></script>
+
+  <script src="/js/main-socketio.js"></script>
+  <script src="/js/main-video.js"></script>
+  <script src="/js/main-get-devices.js"></script>
+  <script src="/js/main-call-offer.js"></script>
+
+</body>
+
+</html>

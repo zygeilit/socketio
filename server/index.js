@@ -3,20 +3,32 @@ var app = express()
 var http = require('http').createServer(app)
 var io = require('socket.io')(http)
 var path = require('path')
+var urlParse = require('url-parse')
 var peerConnection = require('./peer-connection')
 
 let roomInfo = {}
 
 app.use(express.static(path.join(__dirname, '..')))
 
+app.get('/', function (req, res) {
+  res.sendFile(path.join(__dirname, '..', '/html/index.html'))
+})
+
 app.get('/room/:roomID', function (req, res) {
-  res.sendFile(path.join(__dirname, '..', '/index.html'))
+  res.sendFile(path.join(__dirname, '..', '/html/room.html'))
+})
+
+app.get('/room-offer/:roomID', function (req, res) {
+  res.sendFile(path.join(__dirname, '..', '/html/room-offer.html'))
+})
+app.get('/room-answer/:roomID', function (req, res) {
+  res.sendFile(path.join(__dirname, '..', '/html/room-anwser.html'))
 })
 
 io.on('connection', function (socket) {
 
   var url = socket.request.headers.referer
-  var splited = url.split('/')
+  var splited = urlParse(url).pathname.split('/')
   var roomID = splited[splited.length - 1] // 获取房间ID
   var user = ''
 
@@ -58,10 +70,6 @@ io.on('connection', function (socket) {
       return false
     }
     io.to(roomID).emit('message', msg)
-  })
-
-  socket.on('videostream', function (data) {
-    io.to(roomID).emit('videostream-client', data)
   })
 
   peerConnection(socket, io, roomID)

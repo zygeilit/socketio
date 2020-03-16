@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="WebRTC code samples">
+  <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1, maximum-scale=1">
+  <meta itemprop="description" content="Client-side WebRTC code samples">
+  <meta itemprop="image" content="../../../images/webrtc-icon-192x192.png">
+  <meta itemprop="name" content="WebRTC code samples">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta id="theme-color" name="theme-color" content="#ffffff">
+
+  <base target="_blank">
+  <title>WebRTC</title>
+
+  <link rel="icon" sizes="192x192" href="../../../images/webrtc-icon-192x192.png">
+  <link href="//fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/main.css">
+</head>
+
+<body>
+
+  <div id="container">
+    <h1>
+      <span>RoomJoin</span>
+    </h1>
+
+    <div>
+      <label>用户名</label>
+      <input id="user" />
+    </div>
+    <div>
+      <label>房间名</label>
+      <input id="room-name" />
+    </div>
+    <div>
+      <a id="join-offer" href="">Join Offer</a>
+      <a id="join-anwser" href="">Join Anwser</a>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+
+  <script>
+    var roomName = ''
+    var username = ''
+    
+    $("#room-name").on('input', e => {
+      roomName = e.target.value
+    })
+    $("#user").on('input', e => {
+      username = e.target.value
+    })
+
+    $("#join-offer").on('click', e => {
+      $("#join-offer").attr('href', `/room-offer/${roomName}?username=${username}`)
+    })
+    $("#join-anwser").on('click', e => {
+      $("#join-anwser").attr('href', `/room-answer/${roomName}?username=${username}`)
+    })
+  </script>
+
+</body>
+
+</html>

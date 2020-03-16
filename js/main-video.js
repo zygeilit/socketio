@@ -1,10 +1,4 @@
-/*
- *  Copyright (c) 2015 The WebRTC project authors. All Rights Reserved.
- *
- *  Use of this source code is governed by a BSD-style license
- *  that can be found in the LICENSE file in the root of the source
- *  tree.
- */
+
 'use strict'
 
 // Put variables in global scope to make them available to the browser console.
@@ -16,7 +10,7 @@ const constraints = window.constraints = {
   }
 }
 
-document.querySelector('#showVideo').addEventListener('click', async e => {
+const showView = async () => {
   try {
     const stream = await navigator.mediaDevices.getUserMedia(constraints)
     const video = document.querySelector('video')
@@ -29,7 +23,7 @@ document.querySelector('#showVideo').addEventListener('click', async e => {
     window.localStream = stream // make variable available to browser console
     video.srcObject = stream
 
-    e.target.disabled = true
+    return stream
   } catch (err) {
 
     if (error.name === 'ConstraintNotSatisfiedError') {
@@ -42,4 +36,6 @@ document.querySelector('#showVideo').addEventListener('click', async e => {
     }
     console.log(`getUserMedia error: ${error.name}`, error)
   }
-})
+}
+
+document.querySelector('#showVideo').addEventListener('click', showView)
