@@ -39,11 +39,16 @@ io.on('connection', function (socket) {
     if (!roomInfo[roomID]) {
       roomInfo[roomID] = []
     }
+
     roomInfo[roomID].push(user)
     socket.join(roomID) // 加入房间
+    
     // 通知房间内人员
     io.to(roomID).emit('system', user + '加入了房间')  
     console.log(user + '加入了' + roomID)
+
+    // 房间内用户个数
+    io.to(roomID).emit('user-joined-number', roomInfo[roomID].length)
   })
 
   socket.on('leave', function () {

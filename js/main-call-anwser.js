@@ -44,7 +44,6 @@ showView().then(stream => {
 
   socket.on('receive-offer-icecandidate', candidate => {
     console.log(`Receive Offer Icecandidate`, candidate)
-    // candidate = new RTCIceCandidate(candidate)
     peerConnection.addIceCandidate(candidate)
   })
 })
