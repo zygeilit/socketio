@@ -3,7 +3,10 @@
 
 // Put variables in global scope to make them available to the browser console.
 const constraints = window.constraints = {
-  "audio": { 'echoCancellation': false },
+  "audio": {
+    'echoCancellation': true,
+    'googNoiseSuppression': true
+  },
   "video": {
     "width": 1280,
     "height": 720
