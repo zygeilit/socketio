@@ -3,7 +3,7 @@
 console.log('Html Offer')
 
 var peerConnection = new RTCPeerConnection({
-  'icsServers': [{
+  'iceServers': [{
     "urls": [ "stun:stun.l.google.com:19302" ]
   }]
 })
