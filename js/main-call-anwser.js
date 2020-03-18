@@ -4,7 +4,9 @@ console.log('Html Answer')
 
 var peerConnection = new RTCPeerConnection({
   'iceServers': [{
-    "urls": [ "stun:stun.l.google.com:19302" ]
+    'urls': [ 'stun:www.onelaas.com' ],
+    'username': 'zygeilit',
+    'credential': '1qa2ws3ed'
   }]
 })
 
